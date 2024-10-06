@@ -5,6 +5,8 @@ const adminRouter = (app) => {
     const router = express.Router();
     const adminController = new AdminController();
     router.post('/',createAdminValidation,adminController.store);
+    //TODO
+    // test
     app.use('/admin',router)
 }
 export default adminRouter;
