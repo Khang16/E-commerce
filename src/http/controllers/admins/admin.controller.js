@@ -1,6 +1,15 @@
+import { hashHmacString } from "../../../../common/helper";
+
 class AdminController {
     store(req, res){
-        res.send("Admin success")
+        try {
+            const { body } = req;
+            let password = body.password || process.env.PASSWORD_DEFAULT;
+            password = hashHmacString(password);
+            const user = 
+        } catch (error) {
+            
+        }
     }
 }
 
