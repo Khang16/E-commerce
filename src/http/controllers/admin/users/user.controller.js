@@ -1,5 +1,5 @@
 import { hashHmacString, responseError, responseJson, responseSuccess } from "../../../../../common/helper.js";
-import { MEDIA } from "../../../../../configs/constant.js";
+import { MEDIA, PAGINATE_OPTIONS } from "../../../../../configs/constant.js";
 import Media from "../../../models/media.model.js";
 import MediaService from "../../../services/media.services.js";
 import UserService from "../../../services/uer.services.js";
@@ -9,16 +9,9 @@ class UserController {
     static mediaService = new MediaService;
     async store(req, res) {
         try {
-            let data = { ...req.body, avatar_id: null };
-            console.log(req.body);
-            
-            
-            // TODO: Check if avatar exists
+            let data = { ...req.body, avatar_id: null };  
             if (req.file) {                
-                // const media = await Media.create({
-                //     url: req.file.filename,
-                //     type: MEDIA.type.user_avtar,
-                // });
+                
 
                 const media = await UserController.mediaService.store(
                     {
@@ -29,13 +22,9 @@ class UserController {
                 console.log( media);
                 
                 data.avatar_id = media._id;
+                console.log(data);
             }
             
-
-            // Store user
-            // const user = await userModel.create(data);
-
-            // Respond with the created user data
             let password = data.password || process.env.PASSWORD_DEFAULT;
             password = hashHmacString(password);
             const user = await UserController.userService.store(
@@ -70,12 +59,89 @@ class UserController {
                 responseSuccess(
                     await UserController.userService.show(userId)
                 )
-            )
+            );
         } catch (error) {
             return responseJson(
                 res,
                 responseError(error),
             );
+        }
+    }
+
+    async update(req, res){
+        try {
+            const userId = req.params.user_id;
+            let data = { ...req.body };
+           
+            if (req.file) {
+                const media = await UserController.mediaService.store({
+                    url: req.file.filename,
+                    type: MEDIA.type.user_avtar,
+                });
+                
+                data.avatar_id = media._id;
+                console.log(data.avatar_id);
+                console.log(media._id);
+
+            }
+           
+            const updatedUser = await UserController.userService.update(userId, data);
+    
+            return responseJson(
+                res,
+                responseSuccess(updatedUser)
+            );
+        } catch (error) {
+            console.error(error);
+            return responseJson(
+                res,
+                responseError(error)
+            );
+        }
+    }
+
+    async delete(req, res){
+        try {
+            const userId= req.params.user_id;
+            const user =  await UserController.userService.delete(userId)
+            return responseJson(
+                res,
+                responseSuccess(
+                   user
+                )
+            )
+        } catch (error) {
+            return responseJson(
+                res,
+                responseError(error)
+            )
+        }
+    }
+
+    async index(req, res){
+        try {
+            const {
+                keyword,
+                gender,
+                limit = PAGINATE_OPTIONS.limit,
+                page = PAGINATE_OPTIONS.page,
+            } = req.query;
+
+            const user = await UserController.userService.index(keyword, gender, page, limit);
+
+            return responseJson(
+                res,
+                responseSuccess(
+                    user
+                )
+            )
+        } catch (error) {
+            return responseJson(
+                res,
+                responseError(
+                    error
+                )
+            )
         }
     }
 }

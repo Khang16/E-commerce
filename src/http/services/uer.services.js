@@ -32,6 +32,40 @@ class UserService{
             throw error
         }
     }
+
+    async delete( id ){
+        try {
+            return await this.userRepository.delete(id);
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async index(keyword, gender, page, limit){
+        try {
+            const conditions = {};
+            if (keyword) {
+                conditions.$or = [
+                    { name: new RegExp(`${keyword}`, 'i') },
+                    { email: new RegExp(`${keyword}`, 'i') },
+                    { phone: new RegExp(`${keyword}`, 'i') },
+                ]
+            };
+
+            if (gender) {
+                conditions.gender = gender;
+            }
+
+            return await this.userRepository.paginate(conditions, limit, page, [
+                'addresses',
+                'avatar'
+            ]);
+        } catch (error) {
+            console.log(error);
+            
+            throw error;
+        }
+    }
 }
 
 export default UserService;

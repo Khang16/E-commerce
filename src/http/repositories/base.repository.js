@@ -1,4 +1,6 @@
 import { PAGINATE_OPTIONS } from "../../../configs/constant.js";
+import { responsePaginate } from "../../../common/helper.js";
+
 
 class BaseRepository{
     constructor(model){
@@ -32,11 +34,12 @@ class BaseRepository{
         conditions = {},
         limit = PAGINATE_OPTIONS.limit,
         page = PAGINATE_OPTIONS.page,
+        populate = [],
     ){
         limit = +limit || PAGINATE_OPTIONS.limit;
         page = +page || PAGINATE_OPTIONS.page;
         const [data, totalData] = await Promise.all([
-            this.getModel().find(conditions).skip(limit * (page - 1)).limit(limit),
+            this.getModel().find(conditions).skip(limit * (page - 1)).limit(limit).populate(populate),
             this.getModel().countDocuments(conditions),
         ])
         return  responsePaginate(data, totalData, page, limit);

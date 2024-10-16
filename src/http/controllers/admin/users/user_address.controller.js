@@ -22,13 +22,6 @@ class UserAddressController{
                 responseError(error)
             )
         }
-        
-        
-        
-        
-        
-
-        res.send("success")
     } 
 }
 export default UserAddressController;

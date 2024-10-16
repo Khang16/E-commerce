@@ -33,7 +33,7 @@ export const responseError = (errors, statuscode=500) => {
                 response.errors.push(
                     {
                         field: path,
-                        message: `Duplicate`,
+                        message: `Duplicate ${path}`,
                         value: value,
                     }
                 )
@@ -42,6 +42,8 @@ export const responseError = (errors, statuscode=500) => {
             default:
                 response.message = errors.message;
         }
+
+        return response;
     };
 
     if (errors instanceof Error) {
