@@ -1,7 +1,7 @@
-import adminRouter from "./users/admin/admin.router.js";
+import userRouter from "./users/admin/user.router.js";
 
 const router = (app) => {
-    adminRouter(app);
+    userRouter(app);
 }
 
 export default router;
