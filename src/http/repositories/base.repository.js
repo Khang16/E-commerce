@@ -51,7 +51,7 @@ class BaseRepository{
                 id,
                 {
                     ...data,
-                    updated_by: update._id ?? null,
+                    updated_by: user._id ?? null,
                 },
                 {new: true}
             )

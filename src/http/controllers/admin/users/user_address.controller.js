@@ -9,7 +9,6 @@ class UserAddressController{
                 user_id: req.params.user_id,
                 
             }
-            console.log(data);
             
             const userAddress = await UserAddress.create({...data})
             return responseJson(

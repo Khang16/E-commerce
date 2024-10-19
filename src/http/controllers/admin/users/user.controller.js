@@ -2,7 +2,7 @@ import { hashHmacString, responseError, responseJson, responseSuccess } from "..
 import { MEDIA, PAGINATE_OPTIONS } from "../../../../../configs/constant.js";
 import Media from "../../../models/media.model.js";
 import MediaService from "../../../services/media.services.js";
-import UserService from "../../../services/uer.services.js";
+import UserService from "../../../services/user.services.js";
 
 class UserController {
     static userService = new UserService;
@@ -19,10 +19,8 @@ class UserController {
                         type: MEDIA.type.user_avtar,
                     }
                 )
-                console.log( media);
                 
                 data.avatar_id = media._id;
-                console.log(data);
             }
             
             let password = data.password || process.env.PASSWORD_DEFAULT;
@@ -80,8 +78,7 @@ class UserController {
                 });
                 
                 data.avatar_id = media._id;
-                console.log(data.avatar_id);
-                console.log(media._id);
+            
 
             }
            

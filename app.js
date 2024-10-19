@@ -1,7 +1,9 @@
+
 import express from 'express'
 import router from './routes/index.js';
 import { reponseJsonByStatus, responseError, responseValidateError } from './common/helper.js';
 import multer from 'multer';
+
 
 const app =express();
 app.use(express.static('storage'))
@@ -29,7 +31,6 @@ app.use(
                 err.statusCode
             ) 
         }
-        console.log(err);
         
         return reponseJsonByStatus(
             res,
