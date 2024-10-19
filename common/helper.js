@@ -133,3 +133,78 @@ export const responseValidateError = (errors)=>{
 export const reponseJsonByStatus = (res, data, statusCode = 200)=>{
     return res.json(data);
 };
+
+
+
+export const generateJWT = (userId, algorithm = "sha1", exp = dayjs().add(1, 'days').unix())=>{
+    const header = JSON.stringify(
+        {
+            alg: algorithm,
+            type: 'JWT',
+        }
+    )
+
+    const payload = JSON.stringify(
+        {
+            id: userId,
+            iat: dayjs().unix,
+            exp,
+        }
+    )
+
+    const base64Header = Buffer.from(header).toString('base64').replace('==','').replace('=','');
+    const base64PayLoad = Buffer.from(payload).toString('base64').replace('==','').replace('=','');
+    const signature = hashHmacString(base64Header + "." + base64PayLoad);
+
+    return base64Header + "." + base64PayLoad + "." +signature; 
+}
+
+export const parserJWT = (token, withBearerPrefix = true) => {
+    const responseToken = {
+        success: false,
+    }
+    
+    if(!token){
+        return {...responseToken, errors: 'Token khong duoc de trong',};
+    }
+    
+    try {
+        let data = [];
+
+        if (withBearerPrefix) {
+            data = token.split(' ')[1].split('.');
+        } else {   
+            data = token.split('.');
+        }
+        const [ base64Header, base64Payload, signature ] = data;
+        const header = JSON.parse(Buffer.from(base64Header, 'base64').toString());
+
+        if(hashHmacString(base64Header + "." + base64Payload,header.alg) !== signature){
+            return {
+                ...responseToken,
+                errors: 'Token ko dung dinh dang'
+            };
+        }
+        const payload = JSON.parse(Buffer.from(base64Payload,'base64').toString());
+
+        if(dayjs().unix() > payload.exp){
+            return {
+                ...responseToken,
+                errors: 'Token da het han',
+            }
+        }
+
+        return {...responseToken, success: true, payload};
+    } catch (error) {
+        console.log(error);
+        
+        return {...responseToken, errors: error.message};
+    }
+    
+}
+
+export const generateConfirmEmailUrl = (userId)=> {
+    const token = generateJWT(userId, 'sha1', dayjs().add(1, 'day'));
+
+    return process.env.FE_DOMAIN + 'confirm-account?token=' + token;
+}

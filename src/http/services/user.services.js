@@ -1,13 +1,25 @@
+import { generateConfirmEmailUrl } from "../../../common/helper.js";
 import UserRepository from "../repositories/user.repository.js"
+import EmailService from "./email.services.js";
 
 class UserService{
     constructor(){
         this.userRepository = new UserRepository();
+        this.emailService = new EmailService();
     }
     async store(data, user = null){
         try {   
             const newUser = await this.userRepository.store(data, user);
-            
+            this.emailService.sendMail(
+                [data.email],
+                "Confirm account",
+                "email/confirmAccount.ejs",
+                {
+                    name: data.name,
+                    confirmUrl: generateConfirmEmailUrl(newUser._id)
+                }
+            )
+
             return await newUser.populate('avatar');
         } catch (error) {
             throw error
@@ -60,9 +72,7 @@ class UserService{
                 'addresses',
                 'avatar'
             ]);
-        } catch (error) {
-            console.log(error);
-            
+        } catch (error) {            
             throw error;
         }
     }
