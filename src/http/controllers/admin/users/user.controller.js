@@ -19,7 +19,6 @@ class UserController {
                         type: MEDIA.type.user_avtar,
                     }
                 )
-                
                 data.avatar_id = media._id;
             }
             
@@ -48,7 +47,6 @@ class UserController {
     }
 
     async show(req, res){
-        
         try {
             const userId= req.params.user_id;
             
@@ -76,12 +74,8 @@ class UserController {
                     url: req.file.filename,
                     type: MEDIA.type.user_avtar,
                 });
-                
                 data.avatar_id = media._id;
-            
-
             }
-           
             const updatedUser = await UserController.userService.update(userId, data);
     
             return responseJson(
@@ -90,6 +84,7 @@ class UserController {
             );
         } catch (error) {
             console.error(error);
+
             return responseJson(
                 res,
                 responseError(error)
@@ -100,7 +95,8 @@ class UserController {
     async delete(req, res){
         try {
             const userId= req.params.user_id;
-            const user =  await UserController.userService.delete(userId)
+            const user =  await UserController.userService.delete(userId);
+
             return responseJson(
                 res,
                 responseSuccess(
@@ -123,7 +119,6 @@ class UserController {
                 limit = PAGINATE_OPTIONS.limit,
                 page = PAGINATE_OPTIONS.page,
             } = req.query;
-
             const user = await UserController.userService.index(keyword, gender, page, limit);
 
             return responseJson(

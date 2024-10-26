@@ -4,14 +4,25 @@ import { URL_PATH } from "../../../configs/constant.js";
 
 const mediaSchema = new mongoose.Schema(
     {
-        url:{
+        url: {
             type: String,
-            get: (avatar) => {
+            get: function(avatar) {
                 if (!avatar) {
                     avatar = 'default.png';
+                }      
+                let urlPath;
+                switch (this.type) {
+                    case 1:
+                        urlPath = URL_PATH.avatarProductCategory;
+                        break;
+                    case 4:
+                        urlPath = URL_PATH.avatarUser;
+                        break;
+                    default:
+                        urlPath = 'ERROR/';
                 }
                 
-                return 'http://localhost:3000/' + URL_PATH.avatarUser + avatar;
+                return 'http://localhost:3000/' + urlPath + avatar;
             }
         },
         type: {
@@ -44,4 +55,5 @@ const mediaSchema = new mongoose.Schema(
         }
     }
 )
+
 export default mongoose.model('Media', mediaSchema, 'media')

@@ -12,4 +12,5 @@ const districtSchema = new mongoose.Schema(
         }
     }
 );
+
 export default mongoose.model("Distrcit", districtSchema, 'district');

@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import dayjs from "dayjs"
 import { PAGINATE_OPTIONS } from "../configs/constant.js"
+import redis from '../database/redis/index.js';
 
 export const responseJson = (res, data, statuscode = 200)=>{
     return res.status(statuscode).json(
@@ -159,7 +160,7 @@ export const generateJWT = (userId, algorithm = "sha1", exp = dayjs().add(1, 'da
     return base64Header + "." + base64PayLoad + "." +signature; 
 }
 
-export const parserJWT = (token, withBearerPrefix = true) => {
+export const parserJWT = async (token, withBearerPrefix = true) => {
     const responseToken = {
         success: false,
     }
@@ -176,6 +177,7 @@ export const parserJWT = (token, withBearerPrefix = true) => {
         } else {   
             data = token.split('.');
         }
+
         const [ base64Header, base64Payload, signature ] = data;
         const header = JSON.parse(Buffer.from(base64Header, 'base64').toString());
 
@@ -194,6 +196,15 @@ export const parserJWT = (token, withBearerPrefix = true) => {
             }
         }
 
+        const userToken = await redis.get(`users:tokens:${payload.id}`);
+        
+        if (userToken !== data.join('.')) {
+            return {
+                ...responseToken,
+                errors: 'Token khong hopp le',
+            }
+        }
+        
         return {...responseToken, success: true, payload};
     } catch (error) {
         console.log(error);

@@ -2,6 +2,7 @@ import multer from "multer"
 import { STORE_PATH } from "../../../configs/constant.js";
 import path from 'path'
 import dayjs from "dayjs";
+
 const storage = multer.diskStorage(
     {
         destination: function(req, file, cb){
@@ -32,6 +33,7 @@ const fileFilter = (req, file, cb) => {
         );
     }
 }
+
 export const userAvatarMiddelware = multer({
     storage,
     limits:{

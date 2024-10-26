@@ -20,6 +20,7 @@ export const PAGINATE_OPTIONS = {
 
 export const STORE_PATH = {
     uploadFileAvatarUser: "storage/user/avatar",
+    uploadFileAvatarProductCategory: "storage/product_category/thumbnail"
 }
 
 export const MEDIA = {
@@ -36,9 +37,11 @@ export const MEDIA = {
 
 export const URL_PATH = {
     avatarUser: "user/avatar/",
+    avatarProductCategory: "product_category/thumbnail/",
 }
 
 export const USERADDRESS_TYPE= {
     home: 1,
     office: 2,
 }
+ 
