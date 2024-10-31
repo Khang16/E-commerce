@@ -42,6 +42,8 @@ class AuthService {
     async confirmAccount(token){        
         const responeToken = parserJWT(token, false);
         if(!responeToken.success){
+            
+            
             throw new HttpErrorException(responeToken.errors,401);
         }
         const userId = responeToken.payload.id;

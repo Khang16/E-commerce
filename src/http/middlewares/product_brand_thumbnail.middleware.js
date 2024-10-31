@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 const storage = multer.diskStorage(
     {
         destination: function(req, file, cb){
-            cb(null, path.resolve(STORE_PATH.uploadFileThumbnailProductCategory));
+            cb(null, path.resolve(STORE_PATH.uploadFileAvatarProductBrand));
         },
         filename: function(req, file, cb){
             const uniqueSufix = dayjs().unix() + '_' + Math.round(Math.random() * 1E9);
@@ -34,7 +34,7 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-export const productCategoryAvatarMiddelware = multer({
+export const productBrandAvatarMiddelware = multer({
     storage,
     limits:{
         fileSize: 1*1000*1000,

@@ -10,19 +10,19 @@ class ProductCategoryService{
         try {
             const newProductCategory = await this.productCategoryRepository.store(data, productCategory);
             
-            return await newProductCategory.populate('thumbnail')
+            return await newProductCategory.populate('thumbnail');
         } catch (error) {
-            throw error
-        }
-    }
+            throw error;
+        };
+    };
 
     async update(id, data, category = null){
         try {
             return await this.productCategoryRepository.update(id, data, category).populate('thumbnail');
         } catch (error) {
-            throw error
-        }
-    }
+            throw error;
+        };
+    };
 
     async index(name, limit, page){
         try {
@@ -31,7 +31,7 @@ class ProductCategoryService{
                 conditions.$or = [
                     { name: new RegExp(`${name}`, 'i') },
                 ]
-            }
+            };
 
             return await this.productCategoryRepository.paginate(conditions, limit, page, [
                 'thumbnail'
@@ -39,24 +39,24 @@ class ProductCategoryService{
             
         } catch (error) {                        
             throw error;
-        }
-    }
+        };
+    };
 
     async delete(id){
         try {
             return await this.productCategoryRepository.delete(id);
         } catch (error) {
-            throw error
-        }
-    }
+            throw error;
+        };
+    };
 
     async show(id){
         try {
             return await this.productCategoryRepository.findById(id).populate("thumbnail");
         } catch (error) {
-            throw error
-        }
-    }
+            throw error;
+        };
+    };
 }
 
 export default ProductCategoryService;

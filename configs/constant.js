@@ -20,28 +20,27 @@ export const PAGINATE_OPTIONS = {
 
 export const STORE_PATH = {
     uploadFileAvatarUser: "storage/user/avatar",
-    uploadFileAvatarProductCategory: "storage/product_category/thumbnail"
+    uploadFileThumbnailProductCategory: "storage/product_category/thumbnail",
+    uploadFileAvatarProductBrand: "storage/product_brand/thumbnail"
 }
 
 export const MEDIA = {
     type: {
-        product_thumnail_catory: 1,
+        product_thumbnail_category: 1,
         product_image_detail: 2,
-        product_thumnail_background: 3,
-        user_avtar: 4,
-        brand_thumnail: 5,
+        product_thumbnail_background: 3,
+        product_avatar_user: 4,
+        product_thumbnail_brand: 5,
     }
 }
 
-
-
 export const URL_PATH = {
     avatarUser: "user/avatar/",
-    avatarProductCategory: "product_category/thumbnail/",
+    thumbnailProductCategory: "product_category/thumbnail/",
+    thumbnailProductBrand: "product_brand/thumbnail/"
 }
 
 export const USERADDRESS_TYPE= {
     home: 1,
     office: 2,
 }
- 

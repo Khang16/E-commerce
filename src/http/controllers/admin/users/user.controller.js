@@ -16,7 +16,7 @@ class UserController {
                 const media = await UserController.mediaService.store(
                     {
                         url: req.file.filename, 
-                        type: MEDIA.type.user_avtar,
+                        type: MEDIA.type.product_avatar_user,
                     }
                 )
                 data.avatar_id = media._id;
@@ -36,9 +36,7 @@ class UserController {
                 res,
                 responseSuccess(user)
             );
-        } catch (error) {
-            console.log(error);
-            
+        } catch (error) {            
             return responseJson(
                 res,
                 responseError(error)
@@ -72,7 +70,7 @@ class UserController {
             if (req.file) {
                 const media = await UserController.mediaService.store({
                     url: req.file.filename,
-                    type: MEDIA.type.user_avtar,
+                    type: MEDIA.type.product_avatar_user,
                 });
                 data.avatar_id = media._id;
             }
@@ -83,8 +81,6 @@ class UserController {
                 responseSuccess(updatedUser)
             );
         } catch (error) {
-            console.error(error);
-
             return responseJson(
                 res,
                 responseError(error)

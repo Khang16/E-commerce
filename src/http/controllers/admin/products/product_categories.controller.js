@@ -14,7 +14,7 @@ class ProductCategoryController {
                 const media = await ProductCategoryController.mediaService.store(
                     {
                         url: req.file.filename,
-                        type: MEDIA.type.product_thumnail_catory,
+                        type: MEDIA.type.product_thumbnail_category,
                     }
                 )
                 data.thumbnail_id = media._id;
@@ -40,12 +40,12 @@ class ProductCategoryController {
 
     async update(req, res){
         try {
-            const categoryId = req.params.categoriesId;
+            const categoryId = req.params.category_id;
             let data = {...req.body};
             if (req.file) {
                 const media = await ProductCategoryController.mediaService.store({
                     url: req.file.filename,
-                    type: MEDIA.type.product_thumnail_catory,
+                    type: MEDIA.type.product_thumbnail_category,
                 });  
                 data.thumbnail_id = media._id;
             }
@@ -67,11 +67,10 @@ class ProductCategoryController {
         try {
             const {
                 name,
-                gender,
                 limit = PAGINATE_OPTIONS.limit,
                 page = PAGINATE_OPTIONS.page,
             } = req.query;
-            const categories = await ProductCategoryController.productCategory.index(name, gender, page, limit);
+            const categories = await ProductCategoryController.productCategory.index(name, page, limit);
 
             return responseJson(
                 res,
@@ -91,7 +90,7 @@ class ProductCategoryController {
 
     async delete(req, res){
         try {
-            const categoryId= req.params.categories_id;
+            const categoryId= req.params.category_id;
             const category =  await ProductCategoryController.productCategory.delete(categoryId);
 
             return responseJson(
@@ -110,7 +109,7 @@ class ProductCategoryController {
 
     async show(req, res){
         try {
-            const categoryId= req.params.categories_id;
+            const categoryId= req.params.category_id;
             
             return responseJson(
                 res,

@@ -13,10 +13,13 @@ const mediaSchema = new mongoose.Schema(
                 let urlPath;
                 switch (this.type) {
                     case 1:
-                        urlPath = URL_PATH.avatarProductCategory;
+                        urlPath = URL_PATH.thumbnailProductCategory;
                         break;
                     case 4:
                         urlPath = URL_PATH.avatarUser;
+                        break;
+                    case 5: 
+                        urlPath = URL_PATH.thumbnailProductBrand;
                         break;
                     default:
                         urlPath = 'ERROR/';
