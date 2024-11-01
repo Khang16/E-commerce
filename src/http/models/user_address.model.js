@@ -39,10 +39,5 @@ const userAddressSchema = new mongoose.Schema(
         }
     }
 )
-userAddressSchema.virtual('address',{
-    ref: 'User',
-    localField: 'user_id',
-    foreignField: '_id',
-    justOne: true,
-})
+
 export default mongoose.model("UserAddress", userAddressSchema, "user_address")

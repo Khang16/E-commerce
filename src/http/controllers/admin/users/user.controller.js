@@ -16,10 +16,9 @@ class UserController {
                 const media = await UserController.mediaService.store(
                     {
                         url: req.file.filename, 
-                        type: MEDIA.type.user_avtar,
+                        type: MEDIA.type.product_avatar_user,
                     }
                 )
-                
                 data.avatar_id = media._id;
             }
             
@@ -37,9 +36,7 @@ class UserController {
                 res,
                 responseSuccess(user)
             );
-        } catch (error) {
-            console.log(error);
-            
+        } catch (error) {            
             return responseJson(
                 res,
                 responseError(error)
@@ -48,7 +45,6 @@ class UserController {
     }
 
     async show(req, res){
-        
         try {
             const userId= req.params.user_id;
             
@@ -74,14 +70,10 @@ class UserController {
             if (req.file) {
                 const media = await UserController.mediaService.store({
                     url: req.file.filename,
-                    type: MEDIA.type.user_avtar,
+                    type: MEDIA.type.product_avatar_user,
                 });
-                
                 data.avatar_id = media._id;
-            
-
             }
-           
             const updatedUser = await UserController.userService.update(userId, data);
     
             return responseJson(
@@ -89,7 +81,6 @@ class UserController {
                 responseSuccess(updatedUser)
             );
         } catch (error) {
-            console.error(error);
             return responseJson(
                 res,
                 responseError(error)
@@ -100,7 +91,8 @@ class UserController {
     async delete(req, res){
         try {
             const userId= req.params.user_id;
-            const user =  await UserController.userService.delete(userId)
+            const user =  await UserController.userService.delete(userId);
+
             return responseJson(
                 res,
                 responseSuccess(
@@ -123,7 +115,6 @@ class UserController {
                 limit = PAGINATE_OPTIONS.limit,
                 page = PAGINATE_OPTIONS.page,
             } = req.query;
-
             const user = await UserController.userService.index(keyword, gender, page, limit);
 
             return responseJson(

@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema(
         otp: {
             type: Number,
         },
-        
         avatar_id: {
             type: String
         },
@@ -81,4 +80,5 @@ userSchema.virtual('addresses',{
     localField: '_id',
     foreignField: 'user_id',
 })
+
 export default mongoose.model('User', userSchema, 'user')

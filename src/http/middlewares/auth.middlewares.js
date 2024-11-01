@@ -2,12 +2,12 @@ import { parserJWT, responseError, responseJson } from "../../../common/helper.j
 import UserRepository from "../repositories/user.repository.js";
 
 const authMiddleware = async( req, res, next)=>{
-    console.log(req.headers.authorization);
+    
     const userRepository = new UserRepository()
-    const responseToken = parserJWT(req.headers.authorization);
+    const responseToken = await parserJWT(req.headers.authorization);
 
     try {
-        if( !responseToken.success){
+        if(!responseToken.success){
             return responseJson(
                 res,
                 responseError(
@@ -15,16 +15,15 @@ const authMiddleware = async( req, res, next)=>{
                 )
             )
         }
-
         const userId = responseToken.payload.id;
         const user =  await userRepository.findById(userId)
+
         if(!userId){
             return responseJson(
                 res,
                 responseError('User khong ton tai')
             )
         }
-
         res.locals.authUser = user;
         
         next();

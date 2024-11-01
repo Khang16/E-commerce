@@ -10,4 +10,5 @@ const provinceSchema = new mongoose.Schema(
 
     }
 )
+
 export default mongoose.model("Province", provinceSchema, "province");

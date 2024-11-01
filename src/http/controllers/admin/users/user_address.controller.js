@@ -6,11 +6,10 @@ class UserAddressController{
         try {
             const data = {
                 ...req.body,
-                user_id: req.params.user_id,
-                
+                user_id: req.params.user_id, 
             }
-            
             const userAddress = await UserAddress.create({...data})
+
             return responseJson(
                 res,
                 responseSuccess(userAddress)
@@ -23,4 +22,5 @@ class UserAddressController{
         }
     } 
 }
+
 export default UserAddressController;

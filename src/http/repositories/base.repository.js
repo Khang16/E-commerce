@@ -1,7 +1,6 @@
 import { PAGINATE_OPTIONS } from "../../../configs/constant.js";
 import { responsePaginate } from "../../../common/helper.js";
 
-
 class BaseRepository{
     constructor(model){
         this.setModel(model);
@@ -63,4 +62,5 @@ class BaseRepository{
         return this.getModel().findByIdAndDelete(id);
     }
 }
+
 export default BaseRepository;

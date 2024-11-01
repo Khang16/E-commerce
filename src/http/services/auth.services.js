@@ -2,6 +2,7 @@ import { generateJWT, hashHmacString, parserJWT, responseJson } from "../../../c
 import { USERS } from "../../../configs/constant.js";
 import HttpErrorException from "../../exceptions/http-error.exception.js";
 import UserRepository from "../repositories/user.repository.js";
+import redis from "../../../database/redis/index.js";
 
 class AuthService {
     constructor(){
@@ -30,12 +31,19 @@ class AuthService {
             ];
             throw Error(JSON.stringify(error));
         }
-        return generateJWT(user._id);
+        const userToken = generateJWT(user._id);
+        redis.set(`users:tokens:${user._id}`, userToken, {
+            EX: 60*60*24
+        });
+
+        return userToken;
     }
 
     async confirmAccount(token){        
         const responeToken = parserJWT(token, false);
         if(!responeToken.success){
+            
+            
             throw new HttpErrorException(responeToken.errors,401);
         }
         const userId = responeToken.payload.id;
@@ -60,4 +68,5 @@ class AuthService {
         return true;
     }
 }
+
 export default AuthService;
