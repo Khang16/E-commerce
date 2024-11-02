@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { Schema } from "mongoose";
 import { responceJoiError, responseJson, responseValidateError } from "../../../../common/helper.js";
+import { CATEGORY_PARENT } from "../../../../configs/constant.js";
 
 export const productCategoryValidate = (req, res, next) => {
     const { body } = req;
@@ -23,7 +24,12 @@ export const productCategoryValidate = (req, res, next) => {
                     'any.required': `Description la truong bat buoc`
                 }
             ),
-
+            parent_id: Joi.string().messages(
+                {
+                    'string.base': `Parent id phai la chuoi`,
+                }
+            ),
+            
             
         },
 

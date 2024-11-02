@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 
-
 const productCategoriesSchema = new mongoose.Schema(
     {
         name: {
@@ -19,7 +18,7 @@ const productCategoriesSchema = new mongoose.Schema(
             type: String,
         },
         parent_id: {
-            type: String,
+            type: ObjectId
         },
         created_by: {
             type: ObjectId
@@ -54,6 +53,13 @@ productCategoriesSchema.virtual('thumbnail', {
     localField: 'thumbnail_id',
     foreignField: '_id',
     justOne: true,
+})
+
+productCategoriesSchema.virtual('parent',{
+    ref: 'ProductCategories',
+    localField: 'parent_id',
+    foreignField: '_id',
+    justOne: true
 })
 
 export default mongoose.model("ProductCategories", productCategoriesSchema, "productCategories")
