@@ -10,6 +10,7 @@ class ProductCategoryController {
     async store(req, res) {
         try {
             let data = { ...req.body, thumbnail_id: null };
+            
             if (req.file) {
                 const media = await ProductCategoryController.mediaService.store(
                     {
@@ -19,8 +20,20 @@ class ProductCategoryController {
                 )
                 data.thumbnail_id = media._id;
             }
+            
+            const parentId = req.body.parent_id;
+            const parentProductCategory = await ProductCategoryController.productCategory.show(parentId)
+            if(!parentProductCategory){
+                const error = [
+                    {
+                        'field': 'parent_id',
+                        'message': 'Danh muc cha khong ton tai'
+                    }
+                ];
+                throw Error(JSON.stringify(error));
+            }
             const productCategory = await ProductCategoryController.productCategory.store({...data})
-
+            
             return responseJson(
                 res,
                 responseSuccess(
