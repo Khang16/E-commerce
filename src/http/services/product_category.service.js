@@ -1,6 +1,7 @@
 import mediaModel from "../models/media.model.js";
 import MediaService from "./media.services.js";
 import ProductCategoryRepository from "../repositories/product_category.js";
+import { isValidObjectId } from "mongoose";
 
 class ProductCategoryService{
     constructor(){
@@ -10,7 +11,10 @@ class ProductCategoryService{
         try {
             const newProductCategory = await this.productCategoryRepository.store(data, productCategory);
             
-            return await newProductCategory.populate('thumbnail');
+            return await newProductCategory.populate([
+                'thumbnail',
+                'parent'
+            ]);
         } catch (error) {
             throw error;
         };
@@ -18,7 +22,10 @@ class ProductCategoryService{
 
     async update(id, data, category = null){
         try {
-            return await this.productCategoryRepository.update(id, data, category).populate('thumbnail');
+            return await this.productCategoryRepository.update(id, data, category).populate([
+                'thumbnail',
+                'parent'
+            ]);
         } catch (error) {
             throw error;
         };
@@ -52,6 +59,12 @@ class ProductCategoryService{
 
     async show(id){
         try {
+            console.log(id, isValidObjectId(id));
+            
+            if (!isValidObjectId(id)) {
+                return null;
+            }
+
             return await this.productCategoryRepository.findById(id).populate("thumbnail");
         } catch (error) {
             throw error;

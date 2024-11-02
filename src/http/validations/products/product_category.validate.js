@@ -23,7 +23,12 @@ export const productCategoryValidate = (req, res, next) => {
                     'any.required': `Description la truong bat buoc`
                 }
             ),
-
+            parent_id: Joi.string().messages(
+                {
+                    'string.base': `Parent id phai la chuoi`,
+                }
+            ),
+            
             
         },
 
