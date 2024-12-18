@@ -6,6 +6,7 @@ import { productCategoryAvatarMiddelware } from "../../../src/http/middlewares/p
 import authMiddleware from "../../../src/http/middlewares/auth.middlewares.js";
 import ProductBrandController from "../../../src/http/controllers/admin/products/product_brand.controller.js";
 import { productBrandAvatarMiddelware } from "../../../src/http/middlewares/product_brand_thumbnail.middleware.js";
+import productBrandValidate from "../../../src/http/validations/products/product_brand.validate.js";
 
 const productRouter = (app) => {
     const router = express.Router();
@@ -19,8 +20,8 @@ const productRouter = (app) => {
     router.get("/categories", productCategory.index);
     router.get("/categories/:category_id", productCategory.show)
 
-    router.post("/brands", productBrandAvatarMiddelware.single('thumbnail'), productBrandController.store);
-    router.put("/brands/:brand_id", productCategoryAvatarMiddelware.single('thumbnail'), productBrandController.update);
+    router.post("/brands", productBrandAvatarMiddelware.single('thumbnail'), productBrandValidate,productBrandController.store);
+    router.put("/brands/:brand_id", productCategoryAvatarMiddelware.single('thumbnail'), productBrandValidate,productBrandController.update);
     router.get("/brands", productBrandController.index);
     router.get("/brands/:brand_id", productBrandController.show)
     router.delete("/brands/:brand_id", productBrandController.delete)
